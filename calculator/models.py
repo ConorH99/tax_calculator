@@ -9,7 +9,7 @@ class Action(models.Model):
 
 class Transaction(models.Model):
     date = models.DateField()
-    purchase_amount = models.DecimalField(max_digits=7, decimal_places=2)
+    amount = models.DecimalField(max_digits=7, decimal_places=2)
     share_price = models.DecimalField(max_digits=5, decimal_places=2)
     action_id = models.ForeignKey(Action, on_delete=models.PROTECT)
     asset_id = models.ForeignKey(Asset, on_delete=models.CASCADE)
