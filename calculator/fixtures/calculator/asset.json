@@ -1,0 +1,26 @@
+[
+    {
+        "model": "calculator.asset",
+        "pk": 1,
+        "fields": {
+            "name": "Apple",
+            "ticker": "aapl"
+        }
+    },
+    {
+        "model": "calculator.asset",
+        "pk": 2,
+        "fields": {
+            "name": "S&P 500",
+            "ticker": "sp5"
+        }
+    },
+    {
+        "model": "calculator.asset",
+        "pk": 3,
+        "fields": {
+            "name": "All World",
+            "ticker": "awrld"
+        }
+    }
+  ]
