@@ -13,6 +13,7 @@ class Transaction(models.Model):
     share_price = models.DecimalField(max_digits=5, decimal_places=2)
     action = models.ForeignKey(Action, on_delete=models.PROTECT)
     asset = models.ForeignKey(Asset, on_delete=models.CASCADE)
+    is_sold = models.BooleanField(default=False)
 
     @property
     def share_quantity(self):
