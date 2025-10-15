@@ -11,5 +11,13 @@ class Transaction(models.Model):
     date = models.DateField()
     amount = models.DecimalField(max_digits=7, decimal_places=2)
     share_price = models.DecimalField(max_digits=5, decimal_places=2)
-    action_id = models.ForeignKey(Action, on_delete=models.PROTECT)
-    asset_id = models.ForeignKey(Asset, on_delete=models.CASCADE)
+    action = models.ForeignKey(Action, on_delete=models.PROTECT)
+    asset = models.ForeignKey(Asset, on_delete=models.CASCADE)
+
+    @property
+    def share_quantity(self):
+        return self.amount / self.share_price
+
+    @property
+    def gain_loss(self):
+        return (self.share_quantity * self.share_price) - self.amount
