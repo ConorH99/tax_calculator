@@ -40,7 +40,7 @@ def group_transactions_by_asset(transactions):
 def calculate_tax_per_sale(all_transactions, buy_transactions_by_asset):
     for transaction in all_transactions:
         if transaction.action.action == "Sell":
-            tax_due = 0
+            total_gain = 0
             total_quantity_to_sell = transaction.share_quantity
             sell_asset_id = transaction.asset.id
 
@@ -70,12 +70,13 @@ def calculate_tax_per_sale(all_transactions, buy_transactions_by_asset):
                 gain_or_loss = (quantity_to_sell * transaction.share_price) - (
                     quantity_to_sell * earliest_bought_transaction.share_price)
 
-                tax_due = tax_due + (gain_or_loss * Decimal(0.41)) if gain_or_loss > 0 else tax_due
+                total_gain = total_gain + gain_or_loss if gain_or_loss > 0 else total_gain
 
                 if earliest_bought_transaction.share_quantity <= quantity_to_sell:
                     buy_transactions_by_asset.get(sell_asset_id).pop(0)
                 else:
                     earliest_bought_transaction.share_quantity -= quantity_to_sell
                 total_quantity_to_sell -= quantity_to_sell
-            transaction.tax_due = tax_due
+            transaction.total_gain = total_gain
+            transaction.tax_due = total_gain * Decimal(0.41)
     return all_transactions
