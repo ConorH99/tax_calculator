@@ -8,17 +8,12 @@ class Action(models.Model):
     action = models.CharField(max_length=8)
 
 class Transaction(models.Model):
-    date = models.DateField()
+    date = models.DateTimeField()
     amount = models.DecimalField(max_digits=7, decimal_places=2)
-    share_price = models.DecimalField(max_digits=5, decimal_places=2)
+    share_quantity = models.DecimalField(max_digits=7, decimal_places=5, default=1.56)
     action = models.ForeignKey(Action, on_delete=models.PROTECT)
     asset = models.ForeignKey(Asset, on_delete=models.CASCADE)
-    is_sold = models.BooleanField(default=False)
 
     @property
-    def share_quantity(self):
-        return self.amount / self.share_price
-
-    @property
-    def gain_loss(self):
-        return (self.share_quantity * self.share_price) - self.amount
+    def share_price(self):
+        return self.amount / self.share_quantity
