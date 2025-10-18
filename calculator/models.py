@@ -8,7 +8,7 @@ class Action(models.Model):
     action = models.CharField(max_length=8)
 
 class Transaction(models.Model):
-    date = models.DateTimeField()
+    date = models.DateField()
     amount = models.DecimalField(max_digits=7, decimal_places=2)
     share_quantity = models.DecimalField(max_digits=7, decimal_places=5, default=1.56)
     action = models.ForeignKey(Action, on_delete=models.PROTECT)
