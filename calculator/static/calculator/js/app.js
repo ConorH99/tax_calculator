@@ -1,6 +1,6 @@
 let add_transaction_button = document.querySelector("div + button");
 
-add_transaction_button.addEventListener("click", () => {
+let add_row_to_table = () => {
 
     let num_cells = 8
 
@@ -13,9 +13,9 @@ add_transaction_button.addEventListener("click", () => {
 
     first_input = new_row.querySelector("input")
     first_input.focus()
-})
+}
 
-add_cell_to_row = (cell_num, row) => {
+let add_cell_to_row = (cell_num, row) => {
 
     let cell_classes = "p-2 w-1/8 truncate"
     let input_classes = "border border-black rounded-sm text-md p-1 w-full text-left"
@@ -33,3 +33,5 @@ add_cell_to_row = (cell_num, row) => {
         new_cell.textContent = "-"
     }
 }
+
+add_transaction_button.addEventListener("click", add_row_to_table)
