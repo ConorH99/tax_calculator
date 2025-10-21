@@ -1,4 +1,22 @@
-let add_transaction_button = document.querySelector("div + button");
+let transaction_button = document.querySelector("div + button");
+
+let toggle_add_or_submit_transaction_button = (action) => {
+
+    let new_button_text = action == "add" ? "Submit Transaction" : "Add Transaction"
+    let new_button_colour = action == "add" ? "red" : "green"
+    let new_button_action = action == "add" ? "submit" : "add"
+    let new_button_classes = `bg-${new_button_colour}-600 
+        hover:bg-${new_button_colour}-700 text-white p-2 
+        mt-2 rounded-xl cursor-pointer`;
+
+    transaction_button.textContent = new_button_text;
+    transaction_button.className = new_button_classes;
+    transaction_button.dataset.action = new_button_action
+
+    if (action == "add") {
+        add_row_to_table()
+    }
+}
 
 let add_row_to_table = () => {
 
@@ -34,4 +52,21 @@ let add_cell_to_row = (cell_num, row) => {
     }
 }
 
-add_transaction_button.addEventListener("click", add_row_to_table)
+let add_transaction = () => {
+
+    create_submit_transaction_button()
+    add_row_to_table()
+}
+
+let transaction_button_listener = (e) => {
+
+    console.log(e)
+    action = e.target.dataset.action
+    toggle_add_or_submit_transaction_button(action)
+
+}
+
+let initial_button_action = "initial"
+toggle_add_or_submit_transaction_button(initial_button_action)
+
+transaction_button.addEventListener("click", transaction_button_listener)
