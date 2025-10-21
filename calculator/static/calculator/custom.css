@@ -1,0 +1,13 @@
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+
+::-webkit-scrollbar-thumb {
+  background-color: oklch(87.2% 0.01 258.338);
+  border-radius: 16px;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: oklch(87.2% 0.01 258.338)
+}
