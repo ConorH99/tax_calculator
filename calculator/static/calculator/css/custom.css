@@ -13,3 +13,9 @@
 tbody tr:nth-child(odd) {
     background-color: oklch(87.2% 0.01 258.338)
 }
+
+.truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

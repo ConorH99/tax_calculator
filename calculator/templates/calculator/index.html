@@ -4,40 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
-    <link rel="stylesheet" href="{% static "calculator/index.css" %}">
-    <link rel="stylesheet" href="{% static "calculator/custom.css" %}">
+    <link rel="stylesheet" href="{% static "calculator/css/index.css" %}">
+    <link rel="stylesheet" href="{% static "calculator/css/custom.css" %}">
     <title>Tax Calculator</title>
 </head>
 <body>
     <main class="bg-gray-50 min-h-screen flex justify-center items-center">
-        <section class="bg-white shadow-2xl p-4 rounded-2xl">
+        <section class="w-7/10 bg-white shadow-2xl p-4 rounded-xl">
             <h1 class="text-4xl font-bold mb-4">Your Transactions</h1>
-            <div class="max-h-80 overflow-auto border border-gray-300 rounded-2xl">
-                <table>
+            <div class="max-h-80 overflow-auto border border-gray-300 rounded-xl">
+                <table class="table-fixed w-full">
                     <thead>
                         <tr>
                             {% for header in headers %}
-                                <th class="p-2">{{header}}</th>
+                                <th class="p-2 w-1/8">{{header}}</th>
                             {% endfor %}
                         </tr>
                     </thead>
                     <tbody>
                         {% for transaction in transactions %}
                             <tr>
-                                <td class="p-2">{{ transaction.date }}</td>
-                                <td class="p-2">{{ transaction.action.action }}</td>
-                                <td class="p-2">{{ transaction.asset.name }}</td>
-                                <td class="p-2">{{ transaction.amount }}</td>
-                                <td class="p-2">{{ transaction.share_price | floatformat:2 }}</td>
-                                <td class="p-2">{{ transaction.share_quantity }}</td>
-                                <td class="p-2">{{ transaction.total_gain | floatformat:2 | default:"-"}}</td>
-                                <td class="p-2">{{ transaction.tax_due | floatformat:2 | default:"-"}}</td>
+                                <td class="p-2 w-1/8 truncate">{{ transaction.date }}</td>
+                                <td class="p-2 w-1/8 truncate">{{ transaction.action.action }}</td>
+                                <td class="p-2 w-1/8 truncate">{{ transaction.asset.name }}</td>
+                                <td class="p-2 w-1/8 truncate">{{ transaction.amount }}</td>
+                                <td class="p-2 w-1/8 truncate">{{ transaction.share_price | floatformat:2 }}</td>
+                                <td class="p-2 w-1/8 truncate">{{ transaction.share_quantity }}</td>
+                                <td class="p-2 w-1/8 truncate">{{ transaction.total_gain | floatformat:2 | default:"-"}}</td>
+                                <td class="p-2 w-1/8 truncate">{{ transaction.tax_due | floatformat:2 | default:"-"}}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
+            <button class="bg-green-600 hover:bg-green-700 text-white p-2 mt-2 rounded-xl cursor-pointer">+ Add Transaction</button>
         </section>
     </main>
 </body>
+
+<script type="text/javascript" src="{% static "calculator/js/app.js" %}"></script>
 </html>
