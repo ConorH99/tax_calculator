@@ -5,7 +5,7 @@ from .logic import process_transactions
 
 def index(request):
 
-    headers = ["Date", "Action", "Asset Name", "Amount (EUR)", "Share Price",
+    headers = ["Date", "Action", "Asset Name", "Amount", "Share Price",
                "Share Quantity", "Total Gain", "Tax Due"]
 
     all_transactions = Transaction.objects.select_related('action', 'asset').order_by('date')
