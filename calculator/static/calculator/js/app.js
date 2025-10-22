@@ -46,6 +46,9 @@ let base_button_classes = `mt-2 p-2 text-white rounded-xl cursor-pointer`;
 
 let transaction_button = document.querySelector("div + button");
 let transaction_table = document.querySelector("table");
+let table_body = transaction_table.querySelector("tbody")
+
+let no_transactions_row;
 
 let create_cancel_tranaction_button = () => {
 
@@ -68,6 +71,10 @@ let cancel_transaction = () => {
 
     last_row.remove()
     cancel_button.remove()
+
+    if (no_transactions_row){
+        table_body.appendChild(no_transactions_row)
+    }
 }
 
 let toggle_add_or_submit_transaction_button = (action) => {
@@ -79,17 +86,12 @@ let toggle_add_or_submit_transaction_button = (action) => {
     transaction_button.textContent = new_button_text;
     transaction_button.className = new_button_classes;
     transaction_button.dataset.action = new_button_action
-
-    if (action == "add") {
-        add_row_to_table()
-    }
 }
 
 let add_row_to_table = () => {
 
     let num_cells = 8
-
-    let new_row = transaction_table.insertRow(-1)
+    let new_row = table_body.insertRow(-1)
     
     for (let cell_num=1; cell_num<=num_cells; cell_num++) {
         let cell_header = transaction_table.querySelector(
@@ -104,7 +106,7 @@ let add_row_to_table = () => {
 let add_cell_to_row = (cell_header, row) => {
 
     let cell_classes = "p-2 w-1/8 truncate"
-    let input_classes = "border border-black rounded-sm text-md p-1 w-full text-left"
+    let input_classes = "border border-black rounded-sm text-sm h-7 w-full text-left"
 
     let new_cell = row.insertCell(-1)
     new_cell.className = cell_classes
@@ -124,8 +126,20 @@ let add_cell_to_row = (cell_header, row) => {
 
 let add_transaction = () => {
 
-    create_submit_transaction_button()
+
+    remove_no_transactions_message()
+    create_cancel_tranaction_button()
     add_row_to_table()
+
+}
+
+let remove_no_transactions_message = () => {
+    let no_transactions_cell = transaction_table.querySelector("td[colspan='8']")
+
+    if (no_transactions_cell) {
+        no_transactions_row = no_transactions_cell.parentElement
+        no_transactions_row.remove()
+    }
 }
 
 let transaction_button_listener = (e) => {
@@ -133,7 +147,7 @@ let transaction_button_listener = (e) => {
     action = e.target.dataset.action
 
     if (action == "add") {
-        create_cancel_tranaction_button()
+        add_transaction()
     } else if (action == "cancel") {
         cancel_transaction()
     }

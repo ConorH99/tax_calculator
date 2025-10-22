@@ -22,18 +22,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for transaction in transactions %}
-                            <tr>
-                                <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.date }}</td>
-                                <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.action.action }}</td>
-                                <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.asset.name }}</td>
-                                <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.amount }}</td>
-                                <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.share_price | floatformat:2 }}</td>
-                                <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.share_quantity }}</td>
-                                <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.total_gain | floatformat:2 | default:"-"}}</td>
-                                <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.tax_due | floatformat:2 | default:"-"}}</td>
-                            </tr>
-                        {% endfor %}
+                        {% if transactions %}
+                            {% for transaction in transactions %}
+                                <tr>
+                                    <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.date }}</td>
+                                    <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.action.action }}</td>
+                                    <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.asset.name }}</td>
+                                    <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.amount }}</td>
+                                    <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.share_price | floatformat:2 }}</td>
+                                    <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.share_quantity }}</td>
+                                    <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.total_gain | floatformat:2 | default:"-"}}</td>
+                                    <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.tax_due | floatformat:2 | default:"-"}}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <td colspan="8" class="text-lg text-center p-2">
+                                No transactions available
+                            </td>
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
