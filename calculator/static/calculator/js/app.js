@@ -47,10 +47,9 @@ let transaction_button = document.querySelector("div + button");
 let toggle_add_or_submit_transaction_button = (action) => {
 
     let new_button_text = action == "add" ? "Submit Transaction" : "Add Transaction"
-    let new_button_colour = action == "add" ? "red" : "green"
     let new_button_action = action == "add" ? "submit" : "add"
-    let new_button_classes = `bg-${new_button_colour}-600 
-        hover:bg-${new_button_colour}-700 text-white p-2 
+    let new_button_classes = `bg-green-600 
+        hover:bg-green-700 text-white p-2 
         mt-2 rounded-xl cursor-pointer`;
 
     transaction_button.textContent = new_button_text;
