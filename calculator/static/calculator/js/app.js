@@ -49,6 +49,7 @@ let transaction_table = document.querySelector("table");
 let table_body = transaction_table.querySelector("tbody")
 
 let no_transactions_row;
+let input_fields = {};
 
 let create_cancel_tranaction_button = () => {
 
@@ -65,6 +66,10 @@ let create_cancel_tranaction_button = () => {
 }
 
 let cancel_transaction = () => {
+    remove_cancel_button_and_rows()
+}
+
+let remove_cancel_button_and_rows = () => {
     let cancel_button = transaction_button.nextElementSibling
     let rows = transaction_table.querySelectorAll("tr")
     let last_row = rows[rows.length - 1]
@@ -119,6 +124,8 @@ let add_cell_to_row = (cell_header, row) => {
             cell_header].input_attributes
         Object.assign(input, input_attributes || {})
         new_cell.appendChild(input)
+
+        input_fields[cell_header] = input
     } else {
         new_cell.textContent = "-"
     }
@@ -131,6 +138,36 @@ let add_transaction = () => {
     create_cancel_tranaction_button()
     add_row_to_table()
 
+}
+
+let submit_transaction = async () => {
+
+    let url = transaction_table.dataset.submitUrl
+    let transaction_details = {}
+    let headers = {
+        "Content-Type": "application/json",
+        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+    }
+
+    for (let header in input_fields) {
+        let input_text = input_fields[header].value
+        transaction_details[header] = input_text
+    }
+
+    await fetch(url, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(transaction_details)
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status} ${response.statusText}`)
+        }
+        return response.json()
+    }).catch(error => {
+        console.log(error.message)
+    })
+
+    remove_cancel_button_and_rows()
 }
 
 let remove_no_transactions_message = () => {
@@ -150,6 +187,8 @@ let transaction_button_listener = (e) => {
         add_transaction()
     } else if (action == "cancel") {
         cancel_transaction()
+    } else {
+        submit_transaction()
     }
     toggle_add_or_submit_transaction_button(action)
 }

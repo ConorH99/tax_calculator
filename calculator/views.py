@@ -1,4 +1,7 @@
+import json
+
 from django.shortcuts import render
+from django.http import JsonResponse
 
 from .models import Transaction
 from .logic import process_transactions
@@ -14,3 +17,13 @@ def index(request):
 
     context = {"headers": headers, "transactions": all_transactions_with_tax}
     return render(request, "calculator/index.html", context)
+
+def submit_transaction(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            print(data)
+            return JsonResponse({"Success": "Submission successful"}, status=200)
+        except json.JSONDecodeError:
+            return JsonResponse({"Fail": "Invalid JSON data"}, status=400)
+    return JsonResponse({"Fail": "Method not allowed"}, status=405)
