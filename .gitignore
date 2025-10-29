@@ -1,6 +1,8 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 .env
-.venv
+.venv*
 node_modules
 .vscode
+poetry.lock
+.ruff_cache
