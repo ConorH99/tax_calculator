@@ -13,7 +13,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["ruff>=0.14.2"]
+dev = [
+    "ruff>=0.14.2",
+    "pre_commit>=4.3.0"
+]
 
 [tool.ruff]
 target-version = "py311"
