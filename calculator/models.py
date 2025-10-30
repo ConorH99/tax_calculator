@@ -1,11 +1,14 @@
 from django.db import models
 
+
 class Asset(models.Model):
     name = models.CharField(max_length=255)
     ticker = models.CharField(max_length=5)
 
+
 class Action(models.Model):
     action = models.CharField(max_length=8)
+
 
 class Transaction(models.Model):
     date = models.DateField()
