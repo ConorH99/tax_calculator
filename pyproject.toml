@@ -14,3 +14,16 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["ruff>=0.14.2"]
+
+[tool.ruff]
+target-version = "py311"
+
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "node_modules",
+    "calculator/migrations",
+    "manage.py",
+    "tax_calculator/settings.py"
+]
