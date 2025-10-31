@@ -9,7 +9,8 @@ requires-python = ">=3.11"
 dependencies = [
     "Django>=5.2.7",
     "dotenv>=0.9.9",
-    "mysqlclient>=2.2.7"
+    "mysqlclient>=2.2.7",
+    "requests>=2.32.5"
 ]
 
 [project.optional-dependencies]

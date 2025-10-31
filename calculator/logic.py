@@ -1,5 +1,9 @@
+import requests
+
 from collections import defaultdict
 from decimal import Decimal
+
+from django.conf import settings
 
 
 def process_transactions(all_transactions):
@@ -72,3 +76,36 @@ def calculate_tax_per_sale(all_transactions, buy_transactions_by_asset):
             transaction.total_gain = total_gain
             transaction.tax_due = total_gain * Decimal(0.41)
     return all_transactions
+
+
+def query_asset_names_for_ticker_input(ticker_input):
+    api_url = settings.STOCK_API_URL
+
+    body = [
+        {
+            "idType": "TICKER",
+            "idValue": ticker_input,
+            "securityType": "ETP",
+        }
+    ]
+
+    response = requests.post(api_url, json=body).json() if ticker_input else [{}]
+    body = response[0]
+    print(response)
+
+    asset_names = get_unique_asset_names(body)
+    return asset_names
+
+
+def get_unique_asset_names(response_body):
+    asset_details = response_body.get("data", [])
+    asset_names = []
+
+    if asset_details:
+        seen_figis = set()
+
+        for asset in asset_details:
+            if asset["shareClassFIGI"] not in seen_figis:
+                seen_figis.add(asset["shareClassFIGI"])
+                asset_names.append(asset["name"])
+    return asset_names

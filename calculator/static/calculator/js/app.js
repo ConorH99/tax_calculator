@@ -15,6 +15,12 @@ let transaction_table_column_details = {
         "Asset Name": {
             has_input: false,
         },
+        "Ticker": {
+            has_input: true,
+            input_attributes: {
+                "required": true
+            }
+        },
         "Amount": {
             has_input: true,
             input_attributes: {
@@ -95,7 +101,7 @@ let toggle_add_or_submit_transaction_button = (action) => {
 
 let add_row_to_table = () => {
 
-    let num_cells = 8
+    let num_cells = transaction_table.querySelectorAll("th").length
     let new_row = table_body.insertRow(-1)
     
     for (let cell_num=1; cell_num<=num_cells; cell_num++) {
@@ -110,7 +116,7 @@ let add_row_to_table = () => {
 
 let add_cell_to_row = (cell_header, row) => {
 
-    let cell_classes = "p-2 w-1/8 truncate"
+    let cell_classes = "p-2 w-1/9 truncate"
     let input_classes = "border border-black rounded-sm text-sm h-7 w-full text-left"
 
     let new_cell = row.insertCell(-1)
@@ -123,6 +129,11 @@ let add_cell_to_row = (cell_header, row) => {
         input_attributes = transaction_table_column_details[
             cell_header].input_attributes
         Object.assign(input, input_attributes || {})
+        
+        if (cell_header == "Ticker") {
+            input.addEventListener("input", ticker_input_listener)
+        }
+
         new_cell.appendChild(input)
 
         input_fields[cell_header] = input
@@ -191,6 +202,33 @@ let transaction_button_listener = (e) => {
         submit_transaction()
     }
     toggle_add_or_submit_transaction_button(action)
+}
+
+let ticker_input_listener = async (e) => {
+    let url = transaction_table.dataset.stockUrl
+    let headers = {
+        "Content-Type": "application/json",
+        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+    }
+    let ticker_input = {
+        "ticker_input": e.target.value
+    }
+
+    let data = await fetch(url, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(ticker_input)
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status} ${response.statusText}`)
+        }
+        return response.json()
+    }).catch(error => {
+        console.log(error.message)
+    })
+
+    console.log(data.asset_names)
+
 }
 
 let initial_button_action = "initial"

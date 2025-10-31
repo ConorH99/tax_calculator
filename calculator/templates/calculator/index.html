@@ -14,11 +14,13 @@
             <h1 class="text-4xl font-bold mb-4">Your Transactions</h1>
             <div class="max-h-80 overflow-auto border border-gray-300 rounded-xl">
                 {% csrf_token %}
-                <table class="table-fixed w-full" data-submit-url="{% url "calculator:submit_transaction" %}">
+                <table class="table-fixed w-full" 
+                       data-submit-url="{% url "calculator:submit_transaction" %}"
+                       data-stock-url="{% url "calculator:get_stock" %}">
                     <thead>
                         <tr>
                             {% for header in headers %}
-                                <th class="text-md text-left p-2 w-1/8 truncate">{{header}}</th>
+                                <th class="text-md text-left p-2 w-1/9 truncate">{{header}}</th>
                             {% endfor %}
                         </tr>
                     </thead>
@@ -26,14 +28,15 @@
                         {% if transactions %}
                             {% for transaction in transactions %}
                                 <tr>
-                                    <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.date }}</td>
-                                    <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.action.action }}</td>
-                                    <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.asset.name }}</td>
-                                    <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.amount }}</td>
-                                    <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.share_price | floatformat:2 }}</td>
-                                    <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.share_quantity }}</td>
-                                    <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.total_gain | floatformat:2 | default:"-"}}</td>
-                                    <td class="text-md text-left p-2 w-1/8 truncate">{{ transaction.tax_due | floatformat:2 | default:"-"}}</td>
+                                    <td class="text-md text-left p-2 w-1/9 truncate">{{ transaction.date }}</td>
+                                    <td class="text-md text-left p-2 w-1/9 truncate">{{ transaction.action.action }}</td>
+                                    <td class="text-md text-left p-2 w-1/9 truncate">{{ transaction.asset.name }}</td>
+                                    <td class="text-md text-left p-2 w-1/9 truncate">{{ transaction.asset.ticker }}</td>
+                                    <td class="text-md text-left p-2 w-1/9 truncate">{{ transaction.amount }}</td>
+                                    <td class="text-md text-left p-2 w-1/9 truncate">{{ transaction.share_price | floatformat:2 }}</td>
+                                    <td class="text-md text-left p-2 w-1/9 truncate">{{ transaction.share_quantity }}</td>
+                                    <td class="text-md text-left p-2 w-1/9 truncate">{{ transaction.total_gain | floatformat:2 | default:"-"}}</td>
+                                    <td class="text-md text-left p-2 w-1/9 truncate">{{ transaction.tax_due | floatformat:2 | default:"-"}}</td>
                                 </tr>
                             {% endfor %}
                         {% else %}

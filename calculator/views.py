@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 
 from .models import Transaction
-from .logic import process_transactions
+from .logic import process_transactions, query_asset_names_for_ticker_input
 
 
 def index(request):
@@ -12,6 +12,7 @@ def index(request):
         "Date",
         "Action",
         "Asset Name",
+        "Ticker",
         "Amount",
         "Share Price",
         "Share Quantity",
@@ -38,3 +39,14 @@ def submit_transaction(request):
         except json.JSONDecodeError:
             return JsonResponse({"Fail": "Invalid JSON data"}, status=400)
     return JsonResponse({"Fail": "Method not allowed"}, status=405)
+
+
+def get_stock(request):
+    if request.method == "POST":
+        try:
+            request = json.loads(request.body)
+            asset_names = query_asset_names_for_ticker_input(request["ticker_input"])
+            return JsonResponse({"asset_names": asset_names}, status=200)
+        except json.JSONDecodeError:
+            return JsonResponse({"Fail": "Invalid JSON data"}, status=400)
+    return JsonResponse({"Fail": "Method Not Allowed"}, status=405)
