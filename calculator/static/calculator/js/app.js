@@ -57,6 +57,32 @@ let table_body = transaction_table.querySelector("tbody")
 let no_transactions_row;
 let input_fields = {};
 
+let make_request = async (url, method, body, headers={}) => {
+
+    if (Object.keys(headers).length === 0) {
+        headers = {
+            "Content-Type": "application/json",
+            "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+            ...headers
+        }
+    }
+
+    let data = await fetch(url, {
+        method: method,
+        headers: headers,
+        body: JSON.stringify(body)
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status} ${response.statusText}`)
+        }
+        return response.json()
+    }).catch(error => {
+        console.log(error.message)
+    })
+
+    return data
+}
+
 let create_cancel_tranaction_button = () => {
 
     let cancel_button_text = "Cancel Transaction"
@@ -154,29 +180,15 @@ let add_transaction = () => {
 let submit_transaction = async () => {
 
     let url = transaction_table.dataset.submitUrl
+    let method = "POST"
     let transaction_details = {}
-    let headers = {
-        "Content-Type": "application/json",
-        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-    }
 
     for (let header in input_fields) {
         let input_text = input_fields[header].value
         transaction_details[header] = input_text
     }
 
-    await fetch(url, {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(transaction_details)
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP Error: ${response.status} ${response.statusText}`)
-        }
-        return response.json()
-    }).catch(error => {
-        console.log(error.message)
-    })
+    let data = make_request(url, method, transaction_details)
 
     remove_cancel_button_and_rows()
 }
@@ -206,26 +218,12 @@ let transaction_button_listener = (e) => {
 
 let ticker_input_listener = async (e) => {
     let url = transaction_table.dataset.stockUrl
-    let headers = {
-        "Content-Type": "application/json",
-        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-    }
+    let method = "POST"
     let ticker_input = {
         "ticker_input": e.target.value
     }
 
-    let data = await fetch(url, {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(ticker_input)
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP Error: ${response.status} ${response.statusText}`)
-        }
-        return response.json()
-    }).catch(error => {
-        console.log(error.message)
-    })
+    let data = await make_request(url, method, ticker_input)
 
     console.log(data.asset_names)
 
