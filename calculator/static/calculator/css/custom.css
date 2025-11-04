@@ -19,3 +19,22 @@ tbody tr:nth-child(odd) {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+form label{
+  display: block;
+  font-weight: bold;
+}
+
+form input, form select {
+  margin-bottom: 1rem;
+  border: 1px solid oklch(87.2% 0.01 258.338);
+  border-radius: 0.3rem;
+}

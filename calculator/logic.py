@@ -93,19 +93,25 @@ def query_asset_names_for_ticker_input(ticker_input):
     body = response[0]
     print(response)
 
-    asset_names = get_unique_asset_names(body)
-    return asset_names
+    asset_autocomplete_list = get_unique_asset_names(body)
+    return asset_autocomplete_list
 
 
 def get_unique_asset_names(response_body):
     asset_details = response_body.get("data", [])
-    asset_names = []
+    asset_autocomplete_list = []
 
     if asset_details:
         seen_figis = set()
 
         for asset in asset_details:
+            print(asset)
             if asset["shareClassFIGI"] not in seen_figis:
                 seen_figis.add(asset["shareClassFIGI"])
-                asset_names.append(asset["name"])
-    return asset_names
+                asset_autocomplete_list.append(
+                    {
+                        "ticker": asset["ticker"],
+                        "name": asset["name"],
+                    }
+                )
+    return asset_autocomplete_list

@@ -6,6 +6,8 @@
     {% load static %}
     <link rel="stylesheet" href="{% static "calculator/css/index.css" %}">
     <link rel="stylesheet" href="{% static "calculator/css/custom.css" %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.7/awesomplete.css" integrity="sha512-GEMEzu9K8wXXaW527IHfGIOaTQ0hXxZPJXZOwGDIO+nrR9Z0ttJih1ZehiEoWY8xPtqzzD7pxAEnQInTZwn3MQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.7/awesomplete.min.js" integrity="sha512-Pc3/aEr2FIVZhHxe0RAC9SFrd+pxBJHN3pNJfJNTKc2XAFnXUjgQGIh6X935ePSXNMN6rFa3yftxSnZfJE8ZAg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <title>Tax Calculator</title>
 </head>
 <body>
@@ -13,9 +15,7 @@
         <section class="w-4/5 bg-white shadow-2xl p-4 rounded-xl">
             <h1 class="text-4xl font-bold mb-4">Your Transactions</h1>
             <div class="max-h-80 overflow-auto border border-gray-300 rounded-xl">
-                {% csrf_token %}
                 <table class="table-fixed w-full" 
-                       data-submit-url="{% url "calculator:submit_transaction" %}"
                        data-stock-url="{% url "calculator:get_stock" %}">
                     <thead>
                         <tr>
@@ -47,9 +47,19 @@
                     </tbody>
                 </table>
             </div>
-            <button></button>
+            <button class="mt-2 p-2 text-white rounded-xl cursor-pointer bg-green-600 hover:bg-green-700">Add Transaction</button>
         </section>
     </main>
+    <dialog class="p-4 rounded-xl">
+        <h2 class="text-2xl font-bold mb-2 text-center">Add Transaction</h2>
+        <fieldset class="border border-gray-300 rounded-xl p-4">
+            <form action="{% url 'calculator:index' %}" method="post">
+                {% csrf_token %}
+                {{ new_transaction_form }}
+                <button type="submit" class="mt-2 p-2 text-white rounded-xl cursor-pointer bg-green-600 hover:bg-green-700">Submit Transaction</button>
+            </form>
+        </fieldset>
+    </dialog>
 </body>
 
 <script type="text/javascript" src="{% static "calculator/js/app.js" %}"></script>

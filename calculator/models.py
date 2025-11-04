@@ -9,6 +9,9 @@ class Asset(models.Model):
 class Action(models.Model):
     action = models.CharField(max_length=8)
 
+    def __str__(self):
+        return self.action
+
 
 class Transaction(models.Model):
     date = models.DateField()
